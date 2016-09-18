@@ -21,15 +21,15 @@ type Day struct {
 
 func (p Program) Print(liftName string, max int, weeks int, increment int) {
 	banner.Print(liftName)
-	fmt.Println(weeks, "week Smolov Jr. program")
-	fmt.Println("==========================================")
+	fmt.Println("================================================")
+	fmt.Println(weeks, "week Smolov Jr. program -- working 1RM:", max)
+	fmt.Println("================================================")
 	for i := 0; i < weeks; i++ {
-		fmt.Println("\nWeek", i+1)
-		fmt.Println("---------")
-
+		fmt.Println()
 		w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', tabwriter.AlignRight)
-		fmt.Fprintln(w, "\tSets\tReps\t Weight\tWorksheet\t")
-		fmt.Fprintln(w, "\t----\t----\t ------\t---------\t")
+		fmt.Fprintf(w, "Week %d\t", i+1)
+		fmt.Fprintln(w, "Sets\tReps\tWeight\tWorksheet\t")
+		fmt.Fprintln(w, "------\t----\t----\t------\t---------\t")
 
 		for _, day := range p.Days {
 			fmt.Fprintf(w, "%s\t", day.Name)
