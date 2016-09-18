@@ -1,0 +1,3 @@
+package: github.com/sofuture/smolovjr
+import:
+- package: github.com/CrowdSurge/banner

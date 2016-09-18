@@ -1,0 +1,8 @@
+hash: ca04fbcf5497ca6809b32569adefb7aa60bef747d8188441c823c815cb4031fe
+updated: 2016-09-18T15:39:43.981453604-06:00
+imports:
+- name: github.com/CrowdSurge/banner
+  version: 8c0e79dc5ff70fb2919f0d662f44fd72ccdf9be2
+  subpackages:
+  - fonts
+testImports: []
