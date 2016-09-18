@@ -29,16 +29,17 @@ func (p Program) Print(liftName string, max int, weeks int, increment int) {
 
 		w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', tabwriter.AlignRight)
 		fmt.Fprintln(w, "\tSets\tReps\t Weight\tWorksheet\t")
+		fmt.Fprintln(w, "\t----\t----\t ------\t---------\t")
 
 		for _, day := range p.Days {
 			fmt.Fprintf(w, "%s\t", day.Name)
 			fmt.Fprintf(w, "%d\t", day.Sets)
 			fmt.Fprintf(w, "%d\t", day.Reps)
-			fmt.Fprintf(w, "%d\t  ", int(day.Percentage*float64(max))+(increment*i))
-			for j := 0; j < day.Sets; j++ {
+			fmt.Fprintf(w, "%d\t  [ ", int(day.Percentage*float64(max))+(increment*i))
+			for j := 0; j < day.Sets-1; j++ {
 				fmt.Fprint(w, "| ")
 			}
-			fmt.Fprintf(w, "|\t\n")
+			fmt.Fprintf(w, "]\t\n")
 		}
 
 		w.Flush()
