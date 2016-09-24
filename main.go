@@ -1,9 +1,9 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
-	"strconv"
 )
 
 var SmolovJr = Program{
@@ -35,38 +35,28 @@ var SmolovJr = Program{
 	},
 }
 
+var (
+	port int
+)
+
+func parseFlags() {
+	flag.IntVar(&port, "port", 0, "port to run webserver on")
+	flag.Parse()
+}
+
 func main() {
-	var liftName string
-	var weeksStr string
-	var incrementStr string
-	var maxStr string
+	parseFlags()
 
-	fmt.Print("Lift name: ")
-	fmt.Scanln(&liftName)
-
-	fmt.Print("Current 1RM: ")
-	fmt.Scanln(&maxStr)
-	max, err := strconv.Atoi(maxStr)
-	if err != nil {
-		fmt.Errorf("unable to parse number out of: %v", maxStr)
-		os.Exit(1)
+	if port == 0 {
+		if err := cli(); err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+	} else {
+		if err := serve(port); err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 	}
-
-	fmt.Print("Weeks to run program: ")
-	fmt.Scanln(&weeksStr)
-	weeks, err := strconv.Atoi(weeksStr)
-	if err != nil {
-		fmt.Errorf("unable to parse number out of: %v", weeksStr)
-		os.Exit(1)
-	}
-
-	fmt.Print("Increment each week: ")
-	fmt.Scanln(&incrementStr)
-	increment, err := strconv.Atoi(incrementStr)
-	if err != nil {
-		fmt.Errorf("unable to parse number out of: %v", incrementStr)
-		os.Exit(1)
-	}
-
-	SmolovJr.Print(liftName, max, weeks, increment)
+	os.Exit(0)
 }
