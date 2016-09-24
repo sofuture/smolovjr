@@ -2,10 +2,8 @@ package main
 
 import (
 	"fmt"
-	"os"
+	"io"
 	"text/tabwriter"
-
-	"github.com/CrowdSurge/banner"
 )
 
 type Program struct {
@@ -19,29 +17,29 @@ type Day struct {
 	Percentage float64
 }
 
-func (p Program) Print(liftName string, max int, weeks int, increment int) {
-	banner.Print(liftName)
-	fmt.Println("================================================")
-	fmt.Println(weeks, "week Smolov Jr. program -- working 1RM:", max)
-	fmt.Println("================================================")
+func (p Program) Print(w io.Writer, liftName string, max int, weeks int, increment int) {
+	fmt.Fprintln(w, liftName)
+	fmt.Fprintln(w, "================================================")
+	fmt.Fprintln(w, weeks, "week Smolov Jr. program -- working 1RM:", max)
+	fmt.Fprintln(w, "================================================")
 	for i := 0; i < weeks; i++ {
-		fmt.Println()
-		w := tabwriter.NewWriter(os.Stdout, 0, 0, 1, ' ', tabwriter.AlignRight)
-		fmt.Fprintf(w, "Week %d\t", i+1)
-		fmt.Fprintln(w, "Sets\tReps\tWeight\tWorksheet\t")
-		fmt.Fprintln(w, "------\t----\t----\t------\t---------\t")
+		fmt.Fprintln(w)
+		tab := tabwriter.NewWriter(w, 0, 0, 1, ' ', tabwriter.AlignRight)
+		fmt.Fprintf(tab, "Week %d\t", i+1)
+		fmt.Fprintln(tab, "Sets\tReps\tWeight\tWorksheet\t")
+		fmt.Fprintln(tab, "------\t----\t----\t------\t---------\t")
 
 		for _, day := range p.Days {
-			fmt.Fprintf(w, "%s\t", day.Name)
-			fmt.Fprintf(w, "%d\t", day.Sets)
-			fmt.Fprintf(w, "%d\t", day.Reps)
-			fmt.Fprintf(w, "%d\t  [ ", int(day.Percentage*float64(max))+(increment*i))
+			fmt.Fprintf(tab, "%s\t", day.Name)
+			fmt.Fprintf(tab, "%d\t", day.Sets)
+			fmt.Fprintf(tab, "%d\t", day.Reps)
+			fmt.Fprintf(tab, "%d\t  [ ", int(day.Percentage*float64(max))+(increment*i))
 			for j := 0; j < day.Sets-1; j++ {
-				fmt.Fprint(w, "| ")
+				fmt.Fprint(tab, "| ")
 			}
-			fmt.Fprintf(w, "]\t\n")
+			fmt.Fprintf(tab, "]\t\n")
 		}
 
-		w.Flush()
+		tab.Flush()
 	}
 }
